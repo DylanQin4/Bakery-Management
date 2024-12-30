@@ -19,10 +19,10 @@ INSERT INTO produits (nom, prix_revient, prix_vente) VALUES
     ('Tarte aux pommes', 3.00, 6.00);
 
 INSERT INTO clients (nom, type) VALUES
-    ('Café du coin', 'Professionnel'),
-    ('École primaire', 'Institutionnel'),
-    ('Marie Dupont', 'Particulier'),
-    ('Jean Martin', 'Particulier');
+    ('Super Maki', 'PROFESSIONNEL'),
+    ('Jumbo', 'PROFESSIONNEL'),
+    ('Kibo', 'PROFESSIONNEL'),
+    ('Divers', 'PARTICULIER');
 
 INSERT INTO fournisseurs (nom) VALUES
     ('Moulin de la Ville'),

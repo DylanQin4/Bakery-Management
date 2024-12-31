@@ -2,10 +2,7 @@ package itu.s5.bakery.produit;
 
 import itu.s5.bakery.recette.Recette;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,15 +14,16 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Le nom est obligatoire")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Le nom ne doit pas contenir de caractères spéciaux")
     @Size(max = 200)
     private String nom;
 
-    @NotNull
+    @NotNull(message = "Le prix de revient est obligatoire")
     @DecimalMin(value = "0.0001", message = "Le prix de revient doit être positif")
     private BigDecimal prixRevient;
 
-    @NotNull
+    @NotNull(message = "Le prix de vente est obligatoire")
     @DecimalMin(value = "0.0001", message = "Le prix de vente doit être positif")
     private BigDecimal prixVente;
 

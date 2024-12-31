@@ -131,10 +131,43 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
 -- Création du Trigger
 CREATE TRIGGER trg_after_insert_details_achat
     AFTER INSERT ON details_achat
     FOR EACH ROW
 EXECUTE FUNCTION after_insert_details_achat();
+
+-- Fonction qui s'exécute après l'insertion dans fabrication
+CREATE OR REPLACE FUNCTION after_insert_fabrication()
+    RETURNS TRIGGER AS $$
+BEGIN
+    -- Insérer un mouvement d'entrée dans mvt_stock_produit
+    INSERT INTO mvt_stock_produit (type_mvt, quantite, date_mvt, id_produit)
+    VALUES ('ENTREE', NEW.quantite, CURRENT_TIMESTAMP, NEW.id_produit);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+-- Création du Trigger
+CREATE TRIGGER trg_after_insert_fabrication
+    AFTER INSERT ON fabrication
+    FOR EACH ROW
+EXECUTE FUNCTION after_insert_fabrication();
+
+-- Fonction qui s'exécute après l'insertion dans details_vente
+CREATE OR REPLACE FUNCTION after_insert_details_vente()
+    RETURNS TRIGGER AS $$
+BEGIN
+    -- Insérer un mouvement de sortie dans mvt_stock_produit
+    INSERT INTO mvt_stock_produit (type_mvt, quantite, date_mvt, id_produit)
+    VALUES ('SORTIE', NEW.quantite, CURRENT_TIMESTAMP, NEW.id_produit);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+-- Création du Trigger
+CREATE TRIGGER trg_after_insert_details_vente
+    AFTER INSERT ON details_vente
+    FOR EACH ROW
+EXECUTE FUNCTION after_insert_details_vente();
+
+
 

@@ -19,6 +19,7 @@ public class Achat {
     @DecimalMin(value = "0.01", message = "Le total doit être positif")
     private Double total;
 
+    @NotNull
     private Date dateAchat;
 
     @NotNull

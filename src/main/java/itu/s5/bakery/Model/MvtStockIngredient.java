@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,7 +26,7 @@ public class MvtStockIngredient {
     @DecimalMin(value = "0.01", message = "La quantité doit être positive")
     private Double quantite;
 
-    private Date dateMvt;
+    private LocalDateTime dateMvt;
 
     @NotNull
     @ManyToOne
@@ -35,7 +36,7 @@ public class MvtStockIngredient {
     public MvtStockIngredient() {
     }
 
-    public MvtStockIngredient(Long id, String typeMvt, Double quantite, Date dateMvt, Ingredient ingredient) {
+    public MvtStockIngredient(Long id, String typeMvt, Double quantite, LocalDateTime dateMvt, Ingredient ingredient) {
         this.id = id;
         this.typeMvt = typeMvt;
         this.quantite = quantite;
@@ -63,11 +64,11 @@ public class MvtStockIngredient {
         this.quantite = quantite;
     }
 
-    public Date getDateMvt() {
+    public LocalDateTime getDateMvt() {
         return dateMvt;
     }
 
-    public void setDateMvt(Date dateMvt) {
+    public void setDateMvt(LocalDateTime dateMvt) {
         this.dateMvt = dateMvt;
     }
 

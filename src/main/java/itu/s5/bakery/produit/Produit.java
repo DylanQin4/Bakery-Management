@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -22,11 +23,11 @@ public class Produit {
 
     @NotNull
     @DecimalMin(value = "0.0001", message = "Le prix de revient doit être positif")
-    private Double prixRevient;
+    private BigDecimal prixRevient;
 
     @NotNull
     @DecimalMin(value = "0.0001", message = "Le prix de vente doit être positif")
-    private Double prixVente;
+    private BigDecimal prixVente;
 
     @OneToMany(mappedBy = "produit")
     private List<Recette> recette;
@@ -47,19 +48,19 @@ public class Produit {
         this.nom = nom;
     }
 
-    public Double getPrixRevient() {
+    public BigDecimal getPrixRevient() {
         return prixRevient;
     }
 
-    public void setPrixRevient(Double prixRevient) {
+    public void setPrixRevient(BigDecimal prixRevient) {
         this.prixRevient = prixRevient;
     }
 
-    public Double getPrixVente() {
+    public BigDecimal getPrixVente() {
         return prixVente;
     }
 
-    public void setPrixVente(Double prixVente) {
+    public void setPrixVente(BigDecimal prixVente) {
         this.prixVente = prixVente;
     }
 

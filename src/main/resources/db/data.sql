@@ -65,9 +65,14 @@ INSERT INTO fabrication (quantite, date_fabrication, id_produit) VALUES
     (50, '2024-12-02', 2),
     (30, '2024-12-03', 3),
     (10, '2024-12-04', 4);
+INSERT INTO fabrication (quantite, date_fabrication, id_produit) VALUES
+    (100, '2024-12-02', 1),
+    (50, '2024-12-03', 2),
+    (30, '2024-12-04', 3),
+    (10, '2024-12-05', 4);
 
 INSERT INTO mvt_stock_ingredient (type_mvt, quantite, date_mvt, id_ingredient) VALUES
-    ('Entree', 20, '2024-12-01', 1), -- Stock initial Farine
-    ('Sortie', 10, '2024-12-02', 1), -- Utilisation Farine
-    ('Entree', 5, '2024-12-03', 3),  -- Stock initial Levure
-    ('Sortie', 2, '2024-12-04', 3);
+    ('Entree', 20, '2024-12-01 10:00:00', 1), -- Stock initial Farine
+    ('Sortie', 10, '2024-12-02 11:12:00', 1), -- Utilisation Farine
+    ('Entree', 5, '2024-12-03 16:32:00', 3),  -- Stock initial Levure
+    ('Sortie', 2, '2024-12-04 17:40:00', 3);

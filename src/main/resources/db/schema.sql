@@ -118,12 +118,23 @@ CREATE TABLE recette(
     FOREIGN KEY(id_produit) REFERENCES produits(id)
 );
 
-SELECT p.id, p.nom, p.prix_revient, p.prix_vente,
-       COALESCE(SUM(f.quantite), 0) AS quantite_fabriquee,
-       COALESCE(SUM(dv.quantite), 0) AS quantite_vendue,
-       (COALESCE(SUM(f.quantite), 0) - COALESCE(SUM(dv.quantite), 0)) AS stock_restant
-FROM produits p
-         LEFT JOIN fabrication f ON p.id = f.id_produit
-         LEFT JOIN details_vente dv ON p.id = dv.id_produit
-GROUP BY p.id, p.nom, p.prix_revient, p.prix_vente
-HAVING (COALESCE(SUM(f.quantite), 0) - COALESCE(SUM(dv.quantite), 0)) > 0;
+
+-- ================================= TRIGGERS =================================
+
+-- Fonction qui s'exécute après l'insertion dans details_achat
+CREATE OR REPLACE FUNCTION after_insert_details_achat()
+    RETURNS TRIGGER AS $$
+BEGIN
+    -- Insérer un mouvement d'entrée dans mvt_stock_ingredient
+    INSERT INTO mvt_stock_ingredient (type_mvt, quantite, date_mvt, id_ingredient)
+    VALUES ('ENTREE', NEW.quantite, CURRENT_TIMESTAMP, NEW.id_ingredient);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du Trigger
+CREATE TRIGGER trg_after_insert_details_achat
+    AFTER INSERT ON details_achat
+    FOR EACH ROW
+EXECUTE FUNCTION after_insert_details_achat();
+

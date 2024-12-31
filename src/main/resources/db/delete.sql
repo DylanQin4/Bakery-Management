@@ -25,3 +25,32 @@ DO $$
                 EXECUTE 'DROP SEQUENCE IF EXISTS ' || seq.seqname || ' CASCADE';
             END LOOP;
     END $$;
+
+-- Supprimer toutes les fonctions
+DO $$
+    DECLARE
+        func RECORD;
+    BEGIN
+        FOR func IN
+            SELECT n.nspname AS schema_name, p.proname AS function_name, pg_catalog.pg_get_function_identity_arguments(p.oid) AS args
+            FROM pg_proc p
+                     JOIN pg_namespace n ON p.pronamespace = n.oid
+            WHERE n.nspname = 'public'
+            LOOP
+                EXECUTE 'DROP FUNCTION IF EXISTS ' || quote_ident(func.schema_name) || '.' || quote_ident(func.function_name) || '(' || func.args || ') CASCADE';
+            END LOOP;
+    END $$;
+
+-- Supprimer toutes les triggers
+DO $$
+    DECLARE
+        trg RECORD;
+    BEGIN
+        FOR trg IN
+            SELECT event_object_table AS table_name, trigger_name
+            FROM information_schema.triggers
+            WHERE trigger_schema = 'public'
+            LOOP
+                EXECUTE 'DROP TRIGGER IF EXISTS ' || quote_ident(trg.trigger_name) || ' ON ' || quote_ident(trg.table_name) || ' CASCADE';
+            END LOOP;
+    END $$;

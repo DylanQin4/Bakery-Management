@@ -71,8 +71,3 @@ INSERT INTO fabrication (quantite, date_fabrication, id_produit) VALUES
     (30, '2024-12-04', 3),
     (10, '2024-12-05', 4);
 
-INSERT INTO mvt_stock_ingredient (type_mvt, quantite, date_mvt, id_ingredient) VALUES
-    ('ENTREE', 20, '2024-12-01 10:00:00', 1), -- Stock initial Farine
-    ('SORTIE', 10, '2024-12-02 11:12:00', 1), -- Utilisation Farine
-    ('ENTREE', 5, '2024-12-03 16:32:00', 3),  -- Stock initial Levure
-    ('SORTIE', 2, '2024-12-04 17:40:00', 3);

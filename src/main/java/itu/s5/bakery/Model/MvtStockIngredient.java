@@ -7,7 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "mvt_stock_ingredient")
@@ -18,14 +19,14 @@ public class MvtStockIngredient {
     private Long id;
 
     @NotBlank
-    @Pattern(regexp = "Entree|Sortie", message = "Le type de mouvement doit être 'Entree' ou 'Sortie'")
+    @Pattern(regexp = "ENTREE|SORTIE", message = "Le type de mouvement doit être 'ENTREE' ou 'SORTIE'")
     private String typeMvt;
 
     @NotNull
     @DecimalMin(value = "0.01", message = "La quantité doit être positive")
-    private Double quantite;
+    private BigDecimal quantite;
 
-    private Date dateMvt;
+    private LocalDateTime dateMvt;
 
     @NotNull
     @ManyToOne
@@ -35,7 +36,7 @@ public class MvtStockIngredient {
     public MvtStockIngredient() {
     }
 
-    public MvtStockIngredient(Long id, String typeMvt, Double quantite, Date dateMvt, Ingredient ingredient) {
+    public MvtStockIngredient(Long id, String typeMvt, BigDecimal quantite, LocalDateTime dateMvt, Ingredient ingredient) {
         this.id = id;
         this.typeMvt = typeMvt;
         this.quantite = quantite;
@@ -55,19 +56,19 @@ public class MvtStockIngredient {
         this.typeMvt = typeMvt;
     }
 
-    public Double getQuantite() {
+    public BigDecimal getQuantite() {
         return quantite;
     }
 
-    public void setQuantite(Double quantite) {
+    public void setQuantite(BigDecimal quantite) {
         this.quantite = quantite;
     }
 
-    public Date getDateMvt() {
+    public LocalDateTime getDateMvt() {
         return dateMvt;
     }
 
-    public void setDateMvt(Date dateMvt) {
+    public void setDateMvt(LocalDateTime dateMvt) {
         this.dateMvt = dateMvt;
     }
 

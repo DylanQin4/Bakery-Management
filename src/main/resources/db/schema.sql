@@ -28,7 +28,7 @@ CREATE TABLE produits(
 
 CREATE TABLE mvt_stock_ingredient(
     id SERIAL,
-    type_mvt VARCHAR(10) NOT NULL,
+    type_mvt VARCHAR(10) CHECK (type_mvt IN ('ENTREE', 'SORTIE')) NOT NULL,
     quantite NUMERIC(15,2) NOT NULL,
     date_mvt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_ingredient INTEGER NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE mvt_stock_ingredient(
 
 CREATE TABLE mvt_stock_produit(
     id SERIAL,
-    type_mvt VARCHAR(10) NOT NULL,
+    type_mvt VARCHAR(10) CHECK (type_mvt IN ('ENTREE', 'SORTIE')) NOT NULL,
     quantite NUMERIC(15,2) NOT NULL,
     date_mvt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_produit INTEGER NOT NULL,

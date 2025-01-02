@@ -16,10 +16,12 @@ import java.util.Optional;
 public class IngredientController {
 
     private final IngredientService ingredientService;
+    private final UniteService uniteService;
 
     @Autowired
-    public IngredientController(IngredientService ingredientService) {
+    public IngredientController(IngredientService ingredientService,UniteService uniteService) {
         this.ingredientService = ingredientService;
+        this.uniteService=uniteService;
     }
 
     @GetMapping
@@ -34,6 +36,7 @@ public class IngredientController {
     public String showCreateForm(Model model, HttpServletRequest request) {
         model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("ingredient", new Ingredient());
+        model.addAttribute("unites", uniteService.getAllUnite());
         return "ingredients/form"; 
     }
 

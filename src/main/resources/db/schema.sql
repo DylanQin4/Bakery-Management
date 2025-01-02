@@ -14,7 +14,7 @@ CREATE TABLE ingredients(
     id_unite INTEGER NOT NULL,
     PRIMARY KEY(id),
     UNIQUE(nom),
-    FOREIGN KEY(id_unite) REFERENCES unites(id)
+    FOREIGN KEY(id_unite) REFERENCES unites(id)ON DELETE CASCADE
 );
 
 CREATE TABLE produits(

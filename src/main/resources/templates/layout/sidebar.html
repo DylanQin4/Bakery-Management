@@ -3,9 +3,9 @@
         <ul class="space-y-2 font-medium">
             <!-- Tableau de bord -->
             <li>
-                <a href="/tableau-de-bord"
+                <a href="/"
                    class="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                   th:classappend="${currentUrl == '/tableau-de-bord'} ? 'bg-gray-200 dark:bg-gray-700'">
+                   th:classappend="${currentUrl == '/'} ? 'bg-gray-200 dark:bg-gray-700'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-kanban"><path d="M6 5v11"/><path d="M12 5v6"/><path d="M18 5v14"/></svg>
                     <span class="ms-3">Tableau de bord</span>
                 </a>
@@ -26,7 +26,7 @@
                 </button>
                 <ul id="dropdown-example"
                     class="py-2 space-y-2"
-                    th:classappend="${currentUrl.startsWith('/ressources')} ? 'block' : 'hidden'">
+                    th:classappend="${currentUrl != null && currentUrl.startsWith('/ressources')} ? 'block' : 'hidden'">
                     <li>
                         <a href="/ressources/ingredients"
                            class="flex items-center w-full p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11"

@@ -61,6 +61,7 @@ public class IngredientController {
             return "redirect:/ressources/ingredients";
         }
         model.addAttribute("ingredient", ingredient.get());
+        model.addAttribute("unites", uniteService.getAllUnite());
         return "ingredients/form"; // Vue pour le formulaire de modification
     }
 

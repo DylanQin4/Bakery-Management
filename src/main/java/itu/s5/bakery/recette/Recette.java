@@ -7,14 +7,14 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "recettes")
+@Table(name = "recette")
 public class Recette {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @DecimalMin(value = "0.0001", message = "La quantité doit être positive")
+    @NotNull(message = "La quantité est obligatoire")
+    @DecimalMin(value = "0.01", message = "La quantité doit être positive")
     private float quantite;
 
     @NotNull
@@ -41,6 +41,10 @@ public class Recette {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public float getQuantite() {
         return quantite;
     }
@@ -65,4 +69,12 @@ public class Recette {
         this.produit = produit;
     }
 
+    public String toString() {
+        return "Recette{" +
+                "id=" + id +
+                ", quantite=" + quantite +
+                ", ingredient=" + ingredient +
+                ", produit=" + produit +
+                '}';
+    }
 }

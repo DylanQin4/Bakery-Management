@@ -24,14 +24,12 @@ public class ProduitController {
     @GetMapping
     public String getAllProduits(Model model, HttpServletRequest request) {
         List<Produit> produits = service.getAllProduits();
-        model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("produits", produits);
         return "produits/list";
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("produit", new Produit());
         return "produits/form";
     }
@@ -49,7 +47,6 @@ public class ProduitController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         Optional<Produit> produit = service.getProduitById(id);
         if (produit.isEmpty()) {
             model.addAttribute("error", "Produit non trouve");

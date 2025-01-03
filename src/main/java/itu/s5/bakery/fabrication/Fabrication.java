@@ -1,4 +1,4 @@
-package itu.s5.bakery.Model;
+package itu.s5.bakery.fabrication;
 
 import itu.s5.bakery.produit.Produit;
 import jakarta.persistence.*;

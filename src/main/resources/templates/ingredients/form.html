@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire Ingrédient</title>
+    <link rel="stylesheet" href="/css/tailwind-output.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+<!-- Navbar -->
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<!-- Sidebar -->
+<div class="relative" th:replace="~{layout/sidebar :: sidebar}"></div>
+
+<!-- Main Content -->
+<div class="p-8 pt-20 sm:ml-64">
+    <h1 class="text-3xl font-extrabold text-gray-800 dark:text-gray-200 mb-6"
+        th:text="${#strings.isEmpty(ingredient.id) ? 'Créer un Ingrédient' : 'Modifier l''Ingrédient'}">
+        Formulaire Ingrédient
+    </h1>
+
+
+    <form th:action="@{/ressources/ingredients}" th:object="${ingredient}" method="post"
+          class="space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Nom -->
+        <div>
+            <label for="nom" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nom de l'Ingrédient</label>
+            <input type="text" id="nom" th:field="*{nom}" required
+                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+            <p class="text-red-600 text-sm mt-1" th:if="${#fields.hasErrors('nom')}"
+               th:errors="*{nom}">Nom invalide</p>
+        </div>
+
+        <!-- Besoin Normal -->
+        <div>
+            <label for="besoinNormal" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Besoin Normal</label>
+            <input type="number" id="besoinNormal" th:field="*{besoinNormal}" required step="0.01"
+                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+            <p class="text-red-600 text-sm mt-1" th:if="${#fields.hasErrors('besoinNormal')}"
+               th:errors="*{besoinNormal}">Besoin normal invalide</p>
+        </div>
+
+        <!-- Besoin Férié -->
+        <div>
+            <label for="besoinFerie" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Besoin Férié</label>
+            <input type="number" id="besoinFerie" th:field="*{besoinFerie}" required step="0.01"
+                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+            <p class="text-red-600 text-sm mt-1" th:if="${#fields.hasErrors('besoinFerie')}"
+               th:errors="*{besoinFerie}">Besoin férié invalide</p>
+        </div>
+
+        <!-- Unité -->
+        <div>
+            <label for="unite" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Unité</label>
+            <select id="unite" th:field="*{unite}" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                <option value="" th:if="${ingredient.id == null}">-- Sélectionnez une unité --</option>
+                <option th:each="unite : ${unites}"
+                        th:value="${unite.id}"
+                        th:text="${unite.libelle}"
+                        th:selected="${ingredient.unite != null && unite.id == ingredient.unite.id}">
+                </option>
+            </select>
+            <p class="text-red-600 text-sm mt-1" th:if="${#fields.hasErrors('unite')}"
+               th:errors="*{besoinFerie}">Besoin férié invalide</p>
+        </div>
+        <div class="flex justify-between">
+            <a href="/ressources/ingredients"
+               class="inline-block px-5 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg shadow-md transition">
+                Annuler
+            </a>
+            <button type="submit"
+                    class="inline-block px-5 py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-lg shadow-md transition">
+                Enregistrer
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/flowbite.min.js"></script>
+
+</body>
+</html>

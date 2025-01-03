@@ -1,0 +1,76 @@
+package itu.s5.bakery.fabrication;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import itu.s5.bakery.produit.ProduitService;
+
+
+@Controller
+@RequestMapping("/ressources/fabrication")
+public class FabricationController {
+    
+    private final FabricationService fabricationService;
+    private final ProduitService produitService;
+
+    @Autowired
+    public FabricationController(FabricationService fabricationService,ProduitService produitService){
+        this.fabricationService=fabricationService;
+        this.produitService=produitService;
+    }
+
+    @GetMapping
+    public String getAllFabrication(Model model,HttpServletRequest request) {
+       List<Fabrication> fabrication=fabricationService.getAllFabrication();
+       model.addAttribute("currentUrl",request.getRequestURI());
+       model.addAttribute("fabrication",fabrication);
+       return "fabrication/list";
+    }
+
+    @GetMapping("/create")
+    public String showCreateForm(Model model, HttpServletRequest request) {
+        model.addAttribute("currentUrl", request.getRequestURI());
+        model.addAttribute("fabrication", new Fabrication());
+        model.addAttribute("produit", produitService.getAllProduits());
+        return "fabrication/form"; 
+    }
+
+    @PostMapping
+    public String saveFabrication(@Valid @ModelAttribute Fabrication fabrication, BindingResult result, Model model,HttpServletRequest request){
+        if(result.hasErrors()){
+            model.addAttribute("currentUrl", request.getRequestURI());
+            model.addAttribute("errors", result.getAllErrors());
+            return "fabrication/form";
+        }
+        fabricationService.createFabrication(fabrication);
+        return "redirect:/ressources/fabrication";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model, HttpServletRequest request) {
+        model.addAttribute("currentUrl", request.getRequestURI());
+        Optional<Fabrication> fabrication = fabricationService.getFabricationById(id);
+        if (fabrication.isEmpty()) {
+            model.addAttribute("error", "Ingrédient non trouvé");
+            return "redirect:/ressources/fabrication";
+        }
+        model.addAttribute("fabrication", fabrication.get());
+        model.addAttribute("produit", produitService.getAllProduits());
+        return "fabrication/form"; // Vue pour le formulaire de modification
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deletefabrication(@PathVariable Long id) {
+        fabricationService.deleteFabricationById(id);
+        return "redirect:/ressources/fabrication";
+    }
+}

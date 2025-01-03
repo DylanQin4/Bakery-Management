@@ -1,4 +1,4 @@
-package itu.s5.bakery.Model;
+package itu.s5.bakery.client;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

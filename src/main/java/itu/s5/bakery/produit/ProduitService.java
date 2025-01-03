@@ -30,4 +30,8 @@ public class ProduitService {
     public void deleteProduit(Long id) {
         produitRepository.deleteById(id);
     }
+
+    public List<Produit> getProduitsSansRecette() {
+        return produitRepository.getProduitsWithoutRecette();
+    }
 }

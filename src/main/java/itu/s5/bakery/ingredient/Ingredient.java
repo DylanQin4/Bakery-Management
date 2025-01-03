@@ -38,6 +38,10 @@ public class Ingredient {
         this.unite = unite;
     }
 
+    public Ingredient(Long id) {
+        this.id = id;
+    }
+
     public Ingredient() {
     }
 

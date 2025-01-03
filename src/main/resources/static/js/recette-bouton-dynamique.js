@@ -7,13 +7,17 @@ function addIngredient() {
     const row = document.createElement('div');
     row.classList.add('ingredient-row', 'flex', 'space-x-4', 'items-center', 'mb-4');
     row.innerHTML = `
-        <select required name="recettes[${index}].ingredientId" class="block w-1/2">
-            <option value="">-- Sélectionnez un ingrédient --</option>
+        <select required
+                name="recettes[${index}].ingredientId"
+                class="block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+            <option value="" disabled>-- Sélectionnez un ingrédient --</option>
             ${ingredients.map(ingredient => `
                 <option value="${ingredient.id}">${ingredient.nom}</option>
             `).join('')}
         </select>
-        <input type="number" required name="recettes[${index}].quantite" placeholder="Quantité" class="block w-1/2" step="0.1"/>
+        <input type="number" name="recettes[${index}].quantite" required step="0.01"
+               placeholder="Quantité"
+               class="block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
         <button type="button" onclick="removeIngredient(this)" class="text-red-600 hover:underline">
             Supprimer
         </button>
@@ -34,8 +38,8 @@ function removeIngredient(button) {
             const input = child.querySelector('input');
 
             // Mettre à jour les attributs "name"
-            if (select) select.name = `recette[${index}].ingredient.id`;
-            if (input) input.name = `recette[${index}].quantite`;
+            if (select) select.name = `recettes[${index}].ingredientId`;
+            if (input) input.name = `recettes[${index}].quantite`;
         });
     } else {
         alert("Vous devez avoir au moins un ingrédient.");

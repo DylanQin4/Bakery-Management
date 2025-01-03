@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Mirana - Formulaire Recette</title>
+    <link rel="stylesheet" href="/css/tailwind-output.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+<!-- Navbar -->
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<!-- Sidebar -->
+<div class="relative" th:replace="~{layout/sidebar :: sidebar}"></div>
+
+<!-- Main Content -->
+<div class="p-8 pt-20 sm:ml-64">
+    <h1 class="text-3xl font-extrabold text-gray-800 dark:text-gray-200 mb-6"
+        th:text="${#strings.isEmpty(recetteForm.produitId) ? 'Créer une Recette' : 'Modifier la Recette'}">
+    </h1>
+
+    <form th:action="@{/ressources/recettes}" th:object="${recetteForm}" method="post"
+          class="space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+
+        <!-- Produit -->
+        <div>
+            <label for="produit" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Produit</label>
+            <select id="produit" th:field="*{produitId}" required th:classappend="${#fields.hasErrors('produitId')} ? '' : 'disable'"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                <option value="" th:if="${recetteForm.produitId == null}">-- Sélectionnez un produit --</option>
+                <option th:each="produit : ${produits}" th:value="${produit.id}" th:text="${produit.nom}" th:selected="${produit.id == recetteForm.produitId}"></option>
+            </select>
+        </div>
+
+        <!-- Ingrédients dynamiques -->
+        <div>
+            <h2 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">Ingrédients</h2>
+            <div id="ingredient-container">
+                <div th:each="recette, stat : ${recetteForm.recettes}" class="ingredient-row flex space-x-4 items-center mb-4">
+                    <select required
+                            th:field="*{recettes[__${stat.index}__].ingredientId}"
+                            class="block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                        <option value="" disabled>-- Sélectionnez un ingrédient --</option>
+                        <option
+                                th:each="ingredient : ${ingredients}"
+                                th:value="${ingredient.id}"
+                                th:text="${ingredient.nom}"
+                                th:selected="${ingredient.id == recette.ingredientId}">
+                        </option>
+                    </select>
+                    <p th:if="${#fields.hasErrors('recettes[__${stat.index}__].ingredientId')}"
+                       th:errors="*{recettes[__${stat.index}__].ingredientId}"
+                       class="text-red-500 text-sm"></p>
+                    <input type="number" th:field="*{recettes[__${stat.index}__].quantite}" required step="0.01"
+                           placeholder="Quantité"
+                           class="block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+                    <p th:if="${#fields.hasErrors('recettes[__${stat.index}__].quantite')}"
+                       th:errors="*{recettes[__${stat.index}__].quantite}"
+                       class="text-red-600 text-sm"></p>
+                    <button type="button" onclick="removeIngredient(this)" class="text-red-600 hover:underline">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+            <button type="button" onclick="addIngredient()" class="mt-2 text-blue-600 hover:underline">
+                Ajouter un ingrédient
+            </button>
+        </div>
+
+        <div class="flex justify-between">
+            <a href="/ressources/recettes"
+               class="inline-block px-5 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg shadow-md transition">
+                Annuler
+            </a>
+            <button type="submit"
+                    class="inline-block px-5 py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-lg shadow-md transition">
+                Enregistrer
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/flowbite.min.js"></script>
+<script src="/js/sidebar.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const ingredients = /*[[${ingredients}]]*/ [];
+    /*]]>*/
+</script>
+<script src="/js/recette-bouton-dynamique.js"></script>
+</body>
+</html>

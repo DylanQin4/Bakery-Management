@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    const dropdownLinks = document.querySelectorAll("#dropdown-example a");
+    const dropdownLinks = document.querySelectorAll("#dropdown-ressources a");
     dropdownLinks.forEach(link => {
         if (currentPath.startsWith('/ressources')) {
-            document.getElementById('dropdown-example').classList.add("block");
-            document.getElementById('dropdown-example').classList.remove("hidden");
+            document.getElementById('dropdown-ressources').classList.add("block");
+            document.getElementById('dropdown-ressources').classList.remove("hidden");
         }
     });
 });

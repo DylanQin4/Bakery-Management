@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
+import itu.s5.bakery.fournisseur.Fournisseur;
+
 @Entity
 @Table(name = "achats")
 public class Achat {

@@ -15,4 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('dropdown-ressources').classList.remove("hidden");
         }
     });
+
+    const dropdownTiersLinks = document.querySelectorAll("#dropdown-tiers a");
+    dropdownTiersLinks.forEach(link => {
+        if (currentPath.startsWith('/tiers')) {
+            document.getElementById('dropdown-tiers').classList.add("block");
+            document.getElementById('dropdown-tiers').classList.remove("hidden");
+        }
+    });
 });

@@ -28,11 +28,16 @@ public class FabricationController {
         this.produitService=produitService;
     }
 
-    @GetMapping
-    public String getAllFabrication(Model model,HttpServletRequest request) {
-       List<Fabrication> fabrication=fabricationService.getAllFabrication();
+    @GetMapping("/{search}")
+    public String getAllFabrication(Model model, HttpServletRequest request, @PathVariable(name = "search", required = false) String search) {
+        if (search != null && !search.trim().isEmpty()) {
+            List<Fabrication> fabrications = fabricationService.searchFabricationByIngredientName(search);
+            model.addAttribute("fabrication", fabrications);
+        } else {
+            model.addAttribute("fabrication", fabricationService.getAllFabrication());
+        }
+        model.addAttribute("searchQuery", search);
        model.addAttribute("currentUrl",request.getRequestURI());
-       model.addAttribute("fabrication",fabrication);
        return "fabrication/list";
     }
 

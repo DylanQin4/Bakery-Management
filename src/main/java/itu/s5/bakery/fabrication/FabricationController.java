@@ -16,7 +16,7 @@ import itu.s5.bakery.produit.ProduitService;
 
 
 @Controller
-@RequestMapping("/ressources/fabrication")
+@RequestMapping("/fabrications")
 public class FabricationController {
     
     private final FabricationService fabricationService;
@@ -52,7 +52,7 @@ public class FabricationController {
             return "fabrication/form";
         }
         fabricationService.createFabrication(fabrication);
-        return "redirect:/ressources/fabrication";
+        return "redirect:/fabrications";
     }
 
     @GetMapping("/edit/{id}")
@@ -61,7 +61,7 @@ public class FabricationController {
         Optional<Fabrication> fabrication = fabricationService.getFabricationById(id);
         if (fabrication.isEmpty()) {
             model.addAttribute("error", "Ingrédient non trouvé");
-            return "redirect:/ressources/fabrication";
+            return "redirect:/fabrications";
         }
         model.addAttribute("fabrication", fabrication.get());
         model.addAttribute("produit", produitService.getAllProduits());
@@ -71,6 +71,6 @@ public class FabricationController {
     @GetMapping("/delete/{id}")
     public String deletefabrication(@PathVariable Long id) {
         fabricationService.deleteFabricationById(id);
-        return "redirect:/ressources/fabrication";
+        return "redirect:/fabrications";
     }
 }

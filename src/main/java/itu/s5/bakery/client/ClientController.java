@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/ressources/client")
+@RequestMapping("/tiers/clients")
 public class ClientController {
     private final ClientService clientService;
 
@@ -38,7 +38,7 @@ public class ClientController {
     public String showCreateForm(Model model, HttpServletRequest request) {
         model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("client", new Client());
-        return "client/form"; 
+        return "client/form";
     }
 
     @PostMapping
@@ -49,7 +49,7 @@ public class ClientController {
             return "client/form";
         }
         clientService.createClient(client);
-        return "redirect:/ressources/client";
+        return "redirect:/tiers/clients";
     }
 
     @GetMapping("/edit/{id}")
@@ -58,7 +58,7 @@ public class ClientController {
         Optional<Client> client = clientService.getClientById(id);
         if (client.isEmpty()) {
             model.addAttribute("error", "Client non trouvé");
-            return "redirect:/ressources/client";
+            return "redirect:/tiers/clients";
         }
         model.addAttribute("client", client.get());
         return "client/form"; // Vue pour le formulaire de modification
@@ -67,6 +67,6 @@ public class ClientController {
     @GetMapping("/delete/{id}")
     public String deleteClient(@PathVariable Long id) {
         clientService.deleteClientById(id);
-        return "redirect:/ressources/client";
+        return "redirect:/tiers/clients";
     }
 }

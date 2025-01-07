@@ -16,7 +16,7 @@
 <!-- Main Content -->
 <div class="p-8 pt-20 sm:ml-64">
     <h1 class="text-3xl font-extrabold text-gray-800 dark:text-gray-200 mb-6">Liste des Fabrications</h1>
-    <a href="ressources/fabrication/create"
+    <a href="/fabrications/create"
     class="inline-block bg-amber-700 hover:bg-amber-800 text-white font-semibold px-5 py-3 rounded-lg shadow-md transition">
         Ajouter une fabrication
     </a>
@@ -44,7 +44,7 @@
                 <td class="px-6 py-4" th:text="${fabrication.dateFabrication}"></td>
                 <td class="px-6 py-4" th:text="${fabrication.produit.nom}"></td>
                 <td class="px-6 py-4 gap-1 flex items-center">
-                    <a th:href="@{/fabrication/edit/{id}(id=${fabrication.id})}"
+                    <a th:href="@{/fabrications/edit/{id}(id=${fabrication.id})}"
                     class="inline-block p-1 rounded-md shadow border-2 border-amber-800">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil text-amber-800">
                             <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
@@ -82,7 +82,7 @@
                                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                         Êtes-vous sûr de vouloir supprimer la fabrication "<span th:text="${fabrication.id}"></span>"?
                                     </h3>
-                                    <a th:href="@{/fabrication/delete/{id}(id=${fabrication.id})}"
+                                    <a th:href="@{/fabrications/delete/{id}(id=${fabrication.id})}"
                                     class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                         Oui, je suis sûr
                                     </a>
@@ -102,5 +102,6 @@
 </div>
 
 <script src="/js/flowbite.min.js"></script>
+<script src="/js/sidebar.js"></script>
 </body>
 </html>

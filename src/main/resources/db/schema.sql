@@ -118,7 +118,6 @@ CREATE TABLE recette(
     FOREIGN KEY(id_produit) REFERENCES produits(id)
 );
 
-
 -- ================================= VIEWS =================================
 -- rechercher un ingredient dans fabrication
 SELECT f.*
@@ -127,7 +126,6 @@ FROM fabrication f
     JOIN recette r ON p.id = r.id_produit
     JOIN ingredients i ON r.id_ingredient = i.id
 WHERE i.nom ILIKE '%ingredient_name%';
-
 
 -- ================================= TRIGGERS =================================
 

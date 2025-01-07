@@ -78,4 +78,6 @@ public class FabricationController {
         fabricationService.deleteFabricationById(id);
         return "redirect:/fabrications";
     }
+
+    
 }

@@ -118,12 +118,15 @@ CREATE TABLE recette(
     FOREIGN KEY(id_produit) REFERENCES produits(id)
 );
 
-select f.*
-FROM fabrication fabrication
-JOIN produits p ON f.id_produit=p.id
-JOIN recette r ON p.id=r.id_produit
-JOIN ingredients i ON r.id_ingredient=i.id
-WHERE i.nom LIKE '%ingredient_name%';
+-- ================================= VIEWS =================================
+-- rechercher un ingredient dans fabrication
+SELECT f.*
+FROM fabrication f
+    JOIN produits p ON f.id_produit = p.id
+    JOIN recette r ON p.id = r.id_produit
+    JOIN ingredients i ON r.id_ingredient = i.id
+WHERE i.nom ILIKE '%ingredient_name%';
+
 -- ================================= TRIGGERS =================================
 
 -- Fonction qui s'exécute après l'insertion dans details_achat

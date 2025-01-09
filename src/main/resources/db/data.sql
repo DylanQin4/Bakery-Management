@@ -12,11 +12,33 @@ INSERT INTO ingredients (nom, besoin_normal, besoin_ferie, id_unite) VALUES
     ('Oeufs', 10, 15, 4),
     ('Lait', 2, 3, 3);
 
+INSERT INTO categories (libelle) VALUES
+('Pain'),
+('Viennoiserie'),
+('Pâtisserie');
+
+INSERT INTO garnitures (libelle) VALUES
+('nature'),
+('Chocolat'),
+('Amandes'),
+('Fruit'),
+('Sucre glace');
+
 INSERT INTO produits (nom, prix_revient, prix_vente) VALUES
     ('Baguette', 0.50, 1.00),
     ('Croissant', 0.70, 1.50),
     ('Pain au chocolat', 0.75, 1.60),
     ('Tarte aux pommes', 3.00, 6.00);
+
+INSERT INTO produits_categories (id_produit, id_categorie) VALUES
+    (1, 1),
+    (2, 2),  -- Croissant dans "Viennoiserie"
+    (3, 2),  -- Pain au Chocolat dans "Viennoiserie"
+    (4, 3);
+
+INSERT INTO produits_garnitures (id_produit, id_garniture) VALUES
+    (2, 1),
+    (3,2) ;
 
 INSERT INTO clients (nom, type) VALUES
     ('Super Maki', 'PROFESSIONNEL'),

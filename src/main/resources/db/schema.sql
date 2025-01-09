@@ -17,6 +17,18 @@ CREATE TABLE ingredients(
     FOREIGN KEY(id_unite) REFERENCES unites(id)ON DELETE CASCADE
 );
 
+CREATE TABLE categories(
+    id SERIAL,
+    libelle VARCHAR(10) NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE(libelle)
+);
+CREATE TABLE garnitures(
+    id SERIAL,
+    libelle VARCHAR(10) NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE(libelle)
+);
 CREATE TABLE produits(
     id SERIAL,
     nom VARCHAR(200) NOT NULL,
@@ -24,6 +36,20 @@ CREATE TABLE produits(
     prix_vente NUMERIC(15,2) NOT NULL,
     PRIMARY KEY(id),
     UNIQUE(nom)
+);
+
+CREATE TABLE produits_categories(
+    id_produit INTEGER NOT NULL ,
+    id_categorie INTEGER NOT NULL,
+    FOREIGN KEY(id_produit) REFERENCES produits(id)ON DELETE CASCADE,
+    FOREIGN KEY(id_categorie) REFERENCES categories(id)ON DELETE CASCADE
+);
+
+CREATE TABLE produits_garnitures(
+    id_produit INTEGER NOT NULL,
+    id_garniture INTEGER NOT NULL,
+    FOREIGN KEY(id_produit) REFERENCES produits(id)ON DELETE CASCADE,
+    FOREIGN KEY(id_garniture) REFERENCES garnitures(id)ON DELETE CASCADE
 );
 
 CREATE TABLE mvt_stock_ingredient(
@@ -126,7 +152,27 @@ FROM fabrication f
     JOIN recette r ON p.id = r.id_produit
     JOIN ingredients i ON r.id_ingredient = i.id
 WHERE i.nom ILIKE '%ingredient_name%';
-
+-- lister des les ventes de categories de pain
+CREATE VIEW produits_ventes_filtrés AS
+SELECT
+    p.nom AS produit
+FROM
+    ventes v
+JOIN
+    details_vente dv ON v.id = dv.id_vente
+JOIN
+    produits p ON dv.id_produit = p.id
+JOIN
+    produits_categories pc ON p.id = pc.id_produit
+JOIN
+    categories c ON pc.id_categorie = c.id
+JOIN
+    produits_garnitures pg ON p.id = pg.id_produit
+JOIN
+    garnitures g ON pg.id_garniture = g.id
+WHERE
+    c.libelle = '%categorie%'    -- Filtrer par catégorie (remplacez par la catégorie souhaitée)
+    AND g.libelle = '%garniture%'
 -- ================================= TRIGGERS =================================
 
 -- Fonction qui s'exécute après l'insertion dans details_achat

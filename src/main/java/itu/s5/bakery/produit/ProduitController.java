@@ -37,7 +37,6 @@ public class ProduitController {
     @PostMapping
     public String saveProduit(@Valid @ModelAttribute Produit produit, BindingResult result, Model model, HttpServletRequest request) {
         if (result.hasErrors()) {
-            model.addAttribute("currentUrl", request.getRequestURI());
             model.addAttribute("errors", result.getAllErrors());
             return "produits/form";
         }

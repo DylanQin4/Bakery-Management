@@ -30,7 +30,8 @@ public class FabricationService {
     public void deleteFabricationById(Long Id){
         fabricationRepository.deleteById(Id);
     }
-    public List<Fabrication> findFabrication(String ingredient_name){
+
+    public List<Fabrication> searchFabricationByIngredientName(String ingredient_name){
         return fabricationRepository.findFabrication(ingredient_name);
     }
 }

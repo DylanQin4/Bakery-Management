@@ -28,22 +28,25 @@ public class FabricationController {
         this.produitService=produitService;
     }
 
-    @GetMapping("/{search}")
-    public String getAllFabrication(Model model, HttpServletRequest request, @PathVariable(name = "search", required = false) String search) {
-        if (search != null && !search.trim().isEmpty()) {
+    @GetMapping({"", "/search"})
+    public String getAllFabrication(
+            Model model,
+            HttpServletRequest request,
+            @RequestParam(name = "search", required = false, defaultValue = "") String search) {
+
+        if (search.trim().isEmpty()) {
+            model.addAttribute("fabrication", fabricationService.getAllFabrication());
+        } else {
             List<Fabrication> fabrications = fabricationService.searchFabricationByIngredientName(search);
             model.addAttribute("fabrication", fabrications);
-        } else {
-            model.addAttribute("fabrication", fabricationService.getAllFabrication());
         }
+
         model.addAttribute("searchQuery", search);
-       model.addAttribute("currentUrl",request.getRequestURI());
-       return "fabrication/list";
+        return "fabrication/list";
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("fabrication", new Fabrication());
         model.addAttribute("produit", produitService.getAllProduits());
         return "fabrication/form"; 
@@ -52,7 +55,6 @@ public class FabricationController {
     @PostMapping
     public String saveFabrication(@Valid @ModelAttribute Fabrication fabrication, BindingResult result, Model model,HttpServletRequest request){
         if(result.hasErrors()){
-            model.addAttribute("currentUrl", request.getRequestURI());
             model.addAttribute("errors", result.getAllErrors());
             return "fabrication/form";
         }
@@ -62,7 +64,6 @@ public class FabricationController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         Optional<Fabrication> fabrication = fabricationService.getFabricationById(id);
         if (fabrication.isEmpty()) {
             model.addAttribute("error", "Ingrédient non trouvé");

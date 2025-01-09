@@ -27,14 +27,12 @@ public class IngredientController {
     @GetMapping
     public String getAllIngredients(Model model, HttpServletRequest request) {
         List<Ingredient> ingredients = ingredientService.getAllIngredient();
-        model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("ingredients", ingredients);
         return "ingredients/list"; // Vue pour afficher les ingrédients
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("ingredient", new Ingredient());
         model.addAttribute("unites", uniteService.getAllUnite());
         return "ingredients/form"; 
@@ -43,7 +41,6 @@ public class IngredientController {
     @PostMapping
     public String saveIngredient(@Valid @ModelAttribute Ingredient ingredient, BindingResult result, Model model, HttpServletRequest request) {
         if (result.hasErrors()) {
-            model.addAttribute("currentUrl", request.getRequestURI());
             model.addAttribute("errors", result.getAllErrors());
             return "ingredients/form"; // Retour au formulaire en cas d'erreurs
         }
@@ -54,7 +51,6 @@ public class IngredientController {
     // Afficher le formulaire de modification d'un ingrédient
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         Optional<Ingredient> ingredient = ingredientService.getIngredientById(id);
         if (ingredient.isEmpty()) {
             model.addAttribute("error", "Ingrédient non trouvé");

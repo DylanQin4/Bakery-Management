@@ -30,14 +30,12 @@ public class FournisseurController {
     @GetMapping
     public String getAllFournisseur(Model model,HttpServletRequest request){
         List<Fournisseur> fournisseur=fournisseurService.getAllFournisseur();
-        model.addAttribute("currentUrl",request.getRequestURI());
         model.addAttribute("fournisseur", fournisseur);
         return "fournisseur/list";
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("fournisseur", new Fournisseur());
         return "fournisseur/form";
     }
@@ -45,7 +43,6 @@ public class FournisseurController {
     @PostMapping
     public String saveFournisseur(@Valid @ModelAttribute Fournisseur fournisseur,BindingResult result, Model model,HttpServletRequest request){
         if(result.hasErrors()){
-            model.addAttribute("currentUrl", request.getRequestURI());
             model.addAttribute("errors", result.getAllErrors());
             return "fournisseur/form";
         }
@@ -55,7 +52,6 @@ public class FournisseurController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpServletRequest request) {
-        model.addAttribute("currentUrl", request.getRequestURI());
         Optional<Fournisseur>fournisseur=fournisseurService.getFournisseurById(id);
         if(fournisseur.isEmpty()){
             model.addAttribute("error", "Fournisseur non trouvé");

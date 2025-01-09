@@ -29,7 +29,6 @@ public class ClientController {
     @GetMapping
     public String getAllClient(Model model,HttpServletRequest request) {
        List<Client> client=clientService.getAllClient();
-       model.addAttribute("currentUrl",request.getRequestURI());
        model.addAttribute("client",client);
        return "client/list";
     }

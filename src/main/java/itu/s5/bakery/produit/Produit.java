@@ -1,5 +1,6 @@
 package itu.s5.bakery.produit;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import itu.s5.bakery.recette.Recette;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -28,6 +29,7 @@ public class Produit {
     private BigDecimal prixVente;
 
     @OneToMany(mappedBy = "produit")
+    @JsonManagedReference
     private List<Recette> recette;
 
     public Long getId() {

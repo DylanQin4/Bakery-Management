@@ -1,5 +1,6 @@
 package itu.s5.bakery.recette;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import itu.s5.bakery.ingredient.Ingredient;
 import itu.s5.bakery.produit.Produit;
 import jakarta.persistence.*;
@@ -25,6 +26,7 @@ public class Recette {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_produit")
+    @JsonBackReference
     private Produit produit;
 
     public Recette() {

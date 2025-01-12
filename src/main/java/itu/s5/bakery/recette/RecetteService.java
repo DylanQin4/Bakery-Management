@@ -26,7 +26,7 @@ public class RecetteService {
     public List<RecetteDTO> getRecettesByProduit(Produit produit) {
         List<Recette> recettes = recetteRepository.findByProduit(produit);
         return recettes.stream()
-                .map(r -> new RecetteDTO(r.getProduit().getId(), r.getIngredient().getId(), r.getQuantite()))
+                .map(r -> new RecetteDTO(produit.getId(), r.getIngredient().getId(), r.getQuantite()))
                 .collect(Collectors.toList());
     }
 

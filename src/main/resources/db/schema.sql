@@ -26,6 +26,36 @@ CREATE TABLE produits(
     UNIQUE(nom)
 );
 
+CREATE TABLE categories(
+    id SERIAL,
+    libelle VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE(libelle)
+);
+
+CREATE TABLE produits_categories(
+    id_produit INTEGER NOT NULL,
+    id_categorie INTEGER NOT NULL,
+    PRIMARY KEY(id_produit, id_categorie),
+    FOREIGN KEY(id_produit) REFERENCES produits(id),
+    FOREIGN KEY(id_categorie) REFERENCES categories(id)
+);
+
+CREATE TABLE garnitures(
+    id SERIAL,
+    libelle VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE(libelle)
+);
+
+CREATE TABLE produits_garnitures(
+    id_produit INTEGER NOT NULL,
+    id_garniture INTEGER NOT NULL,
+    PRIMARY KEY(id_produit, id_garniture),
+    FOREIGN KEY(id_produit) REFERENCES produits(id),
+    FOREIGN KEY(id_garniture) REFERENCES garnitures(id)
+);
+
 CREATE TABLE mvt_stock_ingredient(
     id SERIAL,
     type_mvt VARCHAR(10) CHECK (type_mvt IN ('ENTREE', 'SORTIE')) NOT NULL,
@@ -55,6 +85,24 @@ CREATE TABLE fabrication(
     FOREIGN KEY(id_produit) REFERENCES produits(id)
 );
 
+-- CREATE TABLE fabrication(
+--                             id SERIAL,
+--                             prix_total NUMERIC(15,2) NOT NULL,
+--                             date_fabrication DATE,
+--                             PRIMARY KEY(id)
+-- );
+--
+-- CREATE TABLE details_fabrication(
+--                                     id SERIAL,
+--                                     quantite NUMERIC(15,2) NOT NULL,
+--                                     id_produit INTEGER NOT NULL,
+--                                     prix_unitaire NUMERIC(15,2) NOT NULL,
+--                                     quantite INTEGER NOT NULL,
+--                                     PRIMARY KEY(id),
+--                                     FOREIGN KEY(id_produit) REFERENCES produits(id)
+-- );
+-- et il faut aussi mettre a jour trg_after_insert_fabrication
+
 CREATE TABLE clients(
     id SERIAL,
     nom VARCHAR(255) NOT NULL,
@@ -72,7 +120,7 @@ CREATE TABLE fournisseurs(
 CREATE TABLE ventes(
     id SERIAL,
     total NUMERIC(15,2) NOT NULL,
-    date_vente TIMESTAMP NOT NULL,
+    date_vente TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     id_client INTEGER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_client) REFERENCES clients(id)

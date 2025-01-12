@@ -1,10 +1,12 @@
-package itu.s5.bakery.Model;
+package itu.s5.bakery.vente;
 
 import itu.s5.bakery.produit.Produit;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "details_vente")
@@ -19,23 +21,23 @@ public class DetailVente {
     private Integer quantite;
 
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_produit")
+    private Produit produit;
+
+    @NotNull
     @DecimalMin(value = "0.01", message = "Le prix unitaire doit être positif")
-    private Double prixUnitaire;
+    private BigDecimal prixUnitaire;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_vente")
     private Vente vente;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "id_produit")
-    private Produit produit;
-
     public DetailVente() {
     }
 
-    public DetailVente(Long id, Integer quantite, Double prixUnitaire, Vente vente, Produit produit) {
+    public DetailVente(Long id, Integer quantite, BigDecimal prixUnitaire, Vente vente, Produit produit) {
         this.id = id;
         this.quantite = quantite;
         this.prixUnitaire = prixUnitaire;
@@ -55,11 +57,11 @@ public class DetailVente {
         this.quantite = quantite;
     }
 
-    public Double getPrixUnitaire() {
+    public BigDecimal getPrixUnitaire() {
         return prixUnitaire;
     }
 
-    public void setPrixUnitaire(Double prixUnitaire) {
+    public void setPrixUnitaire(BigDecimal prixUnitaire) {
         this.prixUnitaire = prixUnitaire;
     }
 
@@ -74,9 +76,18 @@ public class DetailVente {
     public Produit getProduit() {
         return produit;
     }
-
     public void setProduit(Produit produit) {
         this.produit = produit;
+    }
+
+    public String toString() {
+        return "DetailVente{" +
+                "id=" + id +
+                ", quantite=" + quantite +
+                ", prixUnitaire=" + prixUnitaire +
+                ", vente=" + vente +
+                ", produit=" + produit +
+                '}';
     }
 
     // Getters and Setters

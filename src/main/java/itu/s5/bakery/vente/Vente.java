@@ -1,9 +1,11 @@
-package itu.s5.bakery.Model;
+package itu.s5.bakery.vente;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,23 +20,22 @@ public class Vente {
 
     @NotNull
     @DecimalMin(value = "0.01", message = "Le total doit être positif")
-    private Double total;
+    private BigDecimal total;
 
-    @NotNull
-    private Date dateVente;
+    private LocalDateTime dateVente;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_client")
     private Client client;
 
-    @OneToMany(mappedBy = "vente")
+    @OneToMany(mappedBy = "vente", cascade = CascadeType.ALL)
     private List<DetailVente> detailsVente;
 
     public Vente() {
     }
 
-    public Vente(Long id, Double total, Date dateVente, Client client) {
+    public Vente(Long id, BigDecimal total, LocalDateTime dateVente, Client client) {
         this.id = id;
         this.total = total;
         this.dateVente = dateVente;
@@ -45,19 +46,19 @@ public class Vente {
         return id;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
-    public Date getDateVente() {
+    public LocalDateTime getDateVente() {
         return dateVente;
     }
 
-    public void setDateVente(Date dateVente) {
+    public void setDateVente(LocalDateTime dateVente) {
         this.dateVente = dateVente;
     }
 
@@ -75,5 +76,15 @@ public class Vente {
 
     public void setDetailsVente(List<DetailVente> detailsVente) {
         this.detailsVente = detailsVente;
+    }
+
+    public String toString() {
+        return "Vente{" +
+                "id=" + id +
+                ", total=" + total +
+                ", dateVente=" + dateVente +
+                ", client=" + client +
+                ", detailsVente=" + detailsVente +
+                '}';
     }
 }

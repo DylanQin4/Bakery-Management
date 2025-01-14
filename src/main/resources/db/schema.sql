@@ -17,6 +17,7 @@ CREATE TABLE ingredients(
     FOREIGN KEY(id_unite) REFERENCES unites(id)ON DELETE CASCADE
 );
 
+
 CREATE TABLE produits(
     id SERIAL,
     nom VARCHAR(200) NOT NULL,
@@ -24,6 +25,14 @@ CREATE TABLE produits(
     prix_vente NUMERIC(15,2) NOT NULL,
     PRIMARY KEY(id),
     UNIQUE(nom)
+);
+CREATE TABLE p_conseilles(
+    id SERIAL,
+    id_produit INTEGER NOT NULL,
+    date_conseillee TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    etat INTEGER (10),
+    PRIMARY KEY(id),
+    FOREIGN KEY(id_produit) REFERENCES produits(id) ON DELETE CASCADE
 );
 
 CREATE TABLE categories(

@@ -1,9 +1,11 @@
 package itu.s5.bakery.vente;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import itu.s5.bakery.client.ClientService;
 import itu.s5.bakery.produit.ProduitService;
+import itu.s5.bakery.produit.categorie.CategorieRepository;
+import itu.s5.bakery.produit.categorie.CategorieService;
+import itu.s5.bakery.produit.garniture.GarnitureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,17 +21,39 @@ public class VenteController {
     private final DetailVenteService detailVenteService;
     private final ClientService clientService;
     private final ProduitService produitService;
+    private final CategorieService categorieService;
+    private final GarnitureService garnitureService;
 
-    public VenteController(VenteService venteService, DetailVenteService detailVenteService, ClientService clientService, ProduitService produitService) {
+    public VenteController(
+            VenteService venteService,
+            DetailVenteService detailVenteService,
+            ClientService clientService,
+            ProduitService produitService,
+            CategorieService categorieService,
+            GarnitureService garnitureService) {
         this.venteService = venteService;
         this.detailVenteService = detailVenteService;
         this.clientService = clientService;
         this.produitService = produitService;
+        this.categorieService = categorieService;
+        this.garnitureService = garnitureService;
     }
 
     @GetMapping
-    public String listVentes(Model model) {
-        model.addAttribute("ventes", venteService.getAllVentes());
+    public String listVentes(
+            @RequestParam(required = false) Long categorieId,
+            @RequestParam(required = false) Long garnitureId,
+            Model model
+    ) {
+        if (categorieId != null || garnitureId != null) {
+            model.addAttribute("ventes", venteService.rechercherVentes(categorieId, garnitureId));
+            model.addAttribute("categorieId", categorieId);
+            model.addAttribute("garnitureId", garnitureId);
+        } else {
+            model.addAttribute("ventes", venteService.getAllVentes());
+        }
+        model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("garnitures", garnitureService.getAllGarnitures());
         return "ventes/list";
     }
 

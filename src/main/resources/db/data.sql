@@ -18,6 +18,37 @@ INSERT INTO produits (nom, prix_revient, prix_vente) VALUES
     ('Pain au chocolat', 0.75, 1.60),
     ('Tarte aux pommes', 3.00, 6.00);
 
+INSERT INTO categories (libelle) VALUES
+    ('Viennoiserie'),
+    ('Snacks'),
+    ('Desserts'),
+    ('Pains traditionnels'),
+    ('Produits de fête');
+
+INSERT INTO garnitures (libelle) VALUES
+    ('Chocolat'),
+    ('Fruits frais'),
+    ('Crème pâtissière'),
+    ('Confiture'),
+    ('Fromage'),
+    ('Noisettes'),
+    ('Amandes');
+
+INSERT INTO produits_categories (id_produit, id_categorie) VALUES
+    (1, 4), -- Baguette, Pains traditionnels
+    (2, 1), -- Croissant, Viennoiserie
+    (2, 2), -- Croissant, Snacks
+    (3, 1), -- Pain au chocolat, Viennoiserie
+    (3, 2), -- Pain au chocolat, Snacks
+    (4, 3); -- Tarte aux pommes, Desserts
+
+INSERT INTO produits_garnitures (id_produit, id_garniture) VALUES
+    (3, 1), -- Pain au chocolat, Chocolat
+    (4, 2), -- Tarte aux pommes, Fruits frais
+    (4, 3), -- Tarte aux pommes, Crème pâtissière
+    (2, 5), -- Croissant, Fromage
+    (4, 7); -- Tarte aux pommes, Amandes
+
 INSERT INTO clients (nom, type) VALUES
     ('Super Maki', 'PROFESSIONNEL'),
     ('Jumbo', 'PROFESSIONNEL'),

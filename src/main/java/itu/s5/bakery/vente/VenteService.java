@@ -18,13 +18,11 @@ import java.util.Optional;
 @Service
 public class VenteService {
     private final VenteRepository venteRepository;
-    private final DetailVenteRepository detailVenteRepository;
     private final ClientService clientService;
     private final ProduitService produitService;
 
-    public VenteService(VenteRepository venteRepository, DetailVenteRepository detailVenteRepository, ClientService clientService, ProduitService produitService) {
+    public VenteService(VenteRepository venteRepository, ClientService clientService, ProduitService produitService) {
         this.venteRepository = venteRepository;
-        this.detailVenteRepository = detailVenteRepository;
         this.clientService = clientService;
         this.produitService = produitService;
     }
@@ -35,6 +33,13 @@ public class VenteService {
 
     public Optional<Vente> getVenteById(Long id) {
         return venteRepository.findById(id);
+    }
+
+    public List<Vente> rechercherVentes(Long categorieId, Long garnitureId) {
+        if (categorieId == null || garnitureId == null) {
+            return venteRepository.findVentesByCategorieOrGarniture(categorieId, garnitureId);
+        }
+        return venteRepository.findVentesByCategorieAndGarniture(categorieId, garnitureId);
     }
 
     @Transactional

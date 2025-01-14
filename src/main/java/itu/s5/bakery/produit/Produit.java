@@ -1,12 +1,15 @@
 package itu.s5.bakery.produit;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import itu.s5.bakery.produit.categorie.Categorie;
+import itu.s5.bakery.produit.garniture.Garniture;
 import itu.s5.bakery.recette.Recette;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "produits")
@@ -31,6 +34,24 @@ public class Produit {
     @OneToMany(mappedBy = "produit")
     @JsonManagedReference
     private List<Recette> recette;
+
+    @ManyToMany
+    @JsonManagedReference
+    @JoinTable(
+            name = "produits_categories",
+            joinColumns = @JoinColumn(name = "id_produit"),
+            inverseJoinColumns = @JoinColumn(name = "id_categorie")
+    )
+    private Set<Categorie> categories;
+
+    @ManyToMany
+    @JsonManagedReference
+    @JoinTable(
+            name = "produits_garnitures",
+            joinColumns = @JoinColumn(name = "id_produit"),
+            inverseJoinColumns = @JoinColumn(name = "id_garniture")
+    )
+    private Set<Garniture> garnitures;
 
     public Long getId() {
         return id;
@@ -70,5 +91,22 @@ public class Produit {
 
     public void setRecette(List<Recette> recette) {
         this.recette = recette;
+    }
+
+
+    public Set<Categorie> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Categorie> categories) {
+        this.categories = categories;
+    }
+
+    public Set<Garniture> getGarnitures() {
+        return garnitures;
+    }
+
+    public void setGarnitures(Set<Garniture> garnitures) {
+        this.garnitures = garnitures;
     }
 }

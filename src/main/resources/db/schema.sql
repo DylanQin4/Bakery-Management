@@ -175,6 +175,32 @@ FROM fabrication f
     JOIN ingredients i ON r.id_ingredient = i.id
 WHERE i.nom ILIKE '%ingredient_name%';
 
+DROP VIEW IF EXISTS v_ventes_par_categorie_garniture;
+-- DROP view v_ventes_par_categorie_garniture;
+CREATE OR REPLACE VIEW v_ventes_par_categorie_garniture AS
+SELECT
+    v.id,
+    v.date_vente,
+    v.total,
+    v.id_client,
+    ARRAY_AGG(DISTINCT c.id) AS categories,
+    ARRAY_AGG(DISTINCT g.id) AS garnitures
+FROM
+    ventes v
+        JOIN details_vente dv ON v.id = dv.id_vente
+        JOIN produits p ON dv.id_produit = p.id
+        JOIN produits_categories pc ON p.id = pc.id_produit
+        JOIN categories c ON pc.id_categorie = c.id
+        JOIN produits_garnitures pg ON p.id = pg.id_produit
+        JOIN garnitures g ON pg.id_garniture = g.id
+GROUP BY
+    v.id, v.date_vente, v.total;
+
+
+SELECT *
+FROM v_ventes_par_categorie_garniture
+WHERE 2 = ANY(categories) AND 5 = ANY(garnitures);
+
 -- ================================= TRIGGERS =================================
 
 -- Fonction qui s'exécute après l'insertion dans details_achat

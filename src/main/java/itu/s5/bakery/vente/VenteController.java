@@ -54,6 +54,7 @@ public class VenteController {
         }
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("garnitures", garnitureService.getAllGarnitures());
+        model.addAttribute("clients", clientService.getAllClient());
         return "ventes/list";
     }
 

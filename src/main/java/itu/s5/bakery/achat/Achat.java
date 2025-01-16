@@ -1,4 +1,4 @@
-package itu.s5.bakery.Model;
+package itu.s5.bakery.achat;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;

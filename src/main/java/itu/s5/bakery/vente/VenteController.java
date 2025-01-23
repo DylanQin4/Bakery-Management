@@ -6,12 +6,17 @@ import itu.s5.bakery.produit.ProduitService;
 import itu.s5.bakery.produit.categorie.CategorieRepository;
 import itu.s5.bakery.produit.categorie.CategorieService;
 import itu.s5.bakery.produit.garniture.GarnitureService;
+import itu.s5.bakery.vendeur.VendeurService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,6 +28,7 @@ public class VenteController {
     private final ProduitService produitService;
     private final CategorieService categorieService;
     private final GarnitureService garnitureService;
+    private final VendeurService vendeurService;
 
     public VenteController(
             VenteService venteService,
@@ -30,39 +36,51 @@ public class VenteController {
             ClientService clientService,
             ProduitService produitService,
             CategorieService categorieService,
-            GarnitureService garnitureService) {
+            GarnitureService garnitureService,
+            VendeurService vendeurService) {
         this.venteService = venteService;
         this.detailVenteService = detailVenteService;
         this.clientService = clientService;
         this.produitService = produitService;
         this.categorieService = categorieService;
         this.garnitureService = garnitureService;
+        this.vendeurService = vendeurService;
     }
 
     @GetMapping
     public String listVentes(
             @RequestParam(required = false) Long categorieId,
             @RequestParam(required = false) Long garnitureId,
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) Long clientId,
             Model model
     ) {
-        if (categorieId != null || garnitureId != null) {
-            model.addAttribute("ventes", venteService.rechercherVentes(categorieId, garnitureId));
-            model.addAttribute("categorieId", categorieId);
-            model.addAttribute("garnitureId", garnitureId);
-        } else {
-            model.addAttribute("ventes", venteService.getAllVentes());
-        }
+        // Récupérer toutes les ventes avec les filtres possibles
+        List<Vente> ventes = venteService.rechercherVentes(categorieId, garnitureId, date, clientId);
+
+        // Ajouter les résultats au modèle
+        model.addAttribute("ventes", ventes);
+        model.addAttribute("categorieId", categorieId);
+        model.addAttribute("garnitureId", garnitureId);
+        model.addAttribute("date", date);
+        model.addAttribute("clientId", clientId);
+
+        // Ajouter les catégories, garnitures et clients pour les filtres
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("garnitures", garnitureService.getAllGarnitures());
         model.addAttribute("clients", clientService.getAllClient());
+
         return "ventes/list";
     }
+
+
 
     @GetMapping("/create")
     public String showCreateForm(Model model) throws JsonProcessingException {
         model.addAttribute("venteForm", new VenteForm());
         model.addAttribute("clients", clientService.getAllClient());
         model.addAttribute("produits", produitService.getAllProduits());
+        model.addAttribute("vendeurs", vendeurService.getAllVendeurs());
         return "ventes/form";
     }
 

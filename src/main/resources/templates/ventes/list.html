@@ -24,6 +24,24 @@
             </a>
         </div>
         <form th:action="@{/ventes}" method="get" class="flex gap-2">
+
+            <div>
+                <label for="clientId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Client</label>
+                <select id="clientId" name="clientId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="" selected>Selectionner</option>
+                    <option
+                            th:each="client : ${clients}"
+                            th:value="${client.id}"
+                            th:text="${client.nom}"
+                            th:selected="${client.id == clientId}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                <input th:value="${date}" name="date" type="date" id="date" class="w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-amber-500 dark:focus:border-amber-500" placeholder="Date" />
+            </div>
             <div>
                 <label for="categorieId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categorie</label>
                 <select id="categorieId" name="categorieId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

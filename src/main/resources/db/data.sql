@@ -70,16 +70,29 @@ INSERT INTO recette (id_ingredient, id_produit, quantite) VALUES
     (2, 4, 0.05),
     (6, 4, 0.10);
 
-INSERT INTO ventes (total, date_vente, id_client) VALUES
-    (25.00, '2024-12-01 10:00:00', 1),
-    (10.00, '2024-12-02 12:00:00', 2),
-    (15.50, '2024-12-03 08:30:00', 3);
+INSERT INTO vendeur (nom, commission)
+VALUES ('Rakoto', 5),
+       ('Jean', 5);
+
+INSERT INTO ventes (total, date_vente, id_client, id_vendeur) VALUES
+    (1000.50, '2025-01-01 10:30:00', 1, 1),
+    (500.00, '2025-01-02 14:00:00', 2, 1),
+    (1200.75, '2025-01-03 16:45:00', 3, 2),
+    (800.25, '2025-01-04 12:15:00', 4, 2),
+    (400.00, '2025-01-05 09:00:00', 3, 1), -- Vente sans vendeur
+(950.80, '2025-01-06 11:30:00', 2, 1);
 
 INSERT INTO details_vente (quantite, prix_unitaire, id_vente, id_produit) VALUES
-    (10, 1.00, 1, 1),
-    (5, 1.50, 1, 2),
-    (3, 6.00, 2, 4),
-    (5, 1.60, 3, 3);
+    (2, 500.25, 1, 1),
+    (1, 500.00, 2, 2),
+    (3, 400.25, 3, 3),
+    (4, 200.00, 4, 4),
+    (5, 80.00, 5, 1),
+    (6, 150.13, 6, 2),
+    (1, 100.00, 1, 3),
+    (2, 250.00, 1, 4),
+    (3, 300.00, 2, 1),
+(2, 400.00, 3, 4);
 
 INSERT INTO achats (total, date_achat, id_fournisseur) VALUES
     (50.00, '2024-12-01 09:00:00', 1),

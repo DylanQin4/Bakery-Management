@@ -126,13 +126,23 @@ CREATE TABLE fournisseurs(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE vendeur (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(150) NOT NULL UNIQUE,
+    commission INTEGER DEFAULT 5
+);
+-- ALTER TABLE vendeur
+--     ADD COLUMN commission INTEGER DEFAULT 5;
+
 CREATE TABLE ventes(
     id SERIAL,
     total NUMERIC(15,2) NOT NULL,
     date_vente TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     id_client INTEGER NOT NULL,
+    id_vendeur INTEGER,
     PRIMARY KEY(id),
-    FOREIGN KEY(id_client) REFERENCES clients(id)
+    FOREIGN KEY(id_client) REFERENCES clients(id),
+    FOREIGN KEY(id_vendeur) references vendeur(id)
 );
 
 CREATE TABLE details_vente(

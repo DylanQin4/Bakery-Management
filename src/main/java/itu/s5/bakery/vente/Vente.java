@@ -1,5 +1,6 @@
 package itu.s5.bakery.vente;
 
+import itu.s5.bakery.vendeur.Vendeur;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -32,18 +33,35 @@ public class Vente {
     @OneToMany(mappedBy = "vente", cascade = CascadeType.ALL)
     private List<DetailVente> detailsVente;
 
+    @ManyToOne
+    @JoinColumn(name = "id_vendeur", nullable = false)
+    private Vendeur vendeur;
+
     public Vente() {
     }
 
-    public Vente(Long id, BigDecimal total, LocalDateTime dateVente, Client client) {
+    public Vente(Long id, BigDecimal total, LocalDateTime dateVente, Client client, Vendeur vendeur) {
         this.id = id;
         this.total = total;
         this.dateVente = dateVente;
         this.client = client;
+        this.vendeur = vendeur;
+    }
+
+    public Vendeur getVendeur() {
+        return vendeur;
+    }
+
+    public void setVendeur(Vendeur vendeur) {
+        this.vendeur = vendeur;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BigDecimal getTotal() {

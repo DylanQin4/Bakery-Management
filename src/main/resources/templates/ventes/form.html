@@ -39,6 +39,16 @@
             </select>
         </div>
 
+        <!-- Vendeur -->
+        <div>
+            <label for="vendeur" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Vendeur</label>
+            <select id="vendeur" name="vendeurId" th:field="*{vendeurId}" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+<!--                <option value="" th:if="${venteForm.getClientId() == null}">&#45;&#45; Sélectionnez un client &#45;&#45;</option>-->
+                <option th:each="vendeur : ${vendeurs}" th:value="${vendeur.id}" th:text="${vendeur.nom}" th:selected="${vendeur.id == venteForm.getVendeurId()}"></option>
+            </select>
+        </div>
+
         <!-- Produits dynamiques -->
         <div>
             <h2 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">Produits</h2>

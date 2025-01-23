@@ -4,18 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VenteRepository extends JpaRepository<Vente, Long> {
-    @Query(value = """
-        SELECT *
-        FROM v_ventes_par_categorie_garniture
-        WHERE :idCategorie = ANY(categories) AND :idGarniture = ANY(garnitures)
-        """, nativeQuery = true)
-    List<Vente> findVentesByCategorieAndGarniture(
-            @Param("idCategorie") Long idCategorie,
-            @Param("idGarniture") Long idGarniture
-    );
 
     @Query(value = """
         SELECT v.*,
@@ -35,4 +29,25 @@ public interface VenteRepository extends JpaRepository<Vente, Long> {
             @Param("idCategorie") Long idCategorie,
             @Param("idGarniture") Long idGarniture
     );
+
+    @Query("SELECT SUM(v.total) FROM Vente v WHERE v.vendeur.id = :vendeurId AND v.dateVente BETWEEN :startDate AND :endDate")
+    BigDecimal sumVentesByVendeurAndDateRange(@Param("vendeurId") Long vendeurId,
+                                              @Param("startDate") LocalDateTime startDate,
+                                              @Param("endDate") LocalDateTime endDate);
+
+
+
+    @Query("SELECT SUM(v.total) FROM Vente v WHERE v.vendeur.id = :vendeurId AND v.dateVente >= :startDate")
+    BigDecimal sumVentesByVendeurAndStartDate(@Param("vendeurId") Long vendeurId,
+                                              @Param("startDate") LocalDateTime startDate);
+
+    @Query("SELECT SUM(v.total) FROM Vente v WHERE v.vendeur.id = :vendeurId AND v.dateVente <= :endDate")
+    BigDecimal sumVentesByVendeurAndEndDate(@Param("vendeurId") Long vendeurId,
+                                              @Param("endDate") LocalDateTime endDate);
+
+
+    @Query("SELECT SUM(v.total) FROM Vente v WHERE v.vendeur.id = :vendeurId")
+    BigDecimal sumVentesByVendeur(@Param("vendeurId") Long vendeurId);
+
+
 }

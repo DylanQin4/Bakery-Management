@@ -66,7 +66,7 @@ public class VenteService {
 
         // Filtrage des ventes selon la date (si elle est spécifiée)
         return ventes.stream()
-                .filter(vente -> (date == null || vente.getDateVente().toLocalDate().equals(date))) // Filtre par date
+                .filter(vente -> (date == null || vente.getDateVente().equals(date))) // Filtre par date
                 .collect(Collectors.toList());
     }
 
@@ -96,7 +96,7 @@ public class VenteService {
         }
         newVente.setDetailsVente(detailVentes);
         newVente.setTotal(total);
-        newVente.setDateVente(LocalDateTime.now());
+        newVente.setDateVente(LocalDate.now());
 
         venteRepository.save(newVente);
     }

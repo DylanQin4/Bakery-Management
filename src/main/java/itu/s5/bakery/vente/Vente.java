@@ -6,7 +6,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Vente {
     @DecimalMin(value = "0.01", message = "Le total doit être positif")
     private BigDecimal total;
 
-    private LocalDateTime dateVente;
+    private LocalDate dateVente;
 
     @NotNull
     @ManyToOne
@@ -40,7 +40,7 @@ public class Vente {
     public Vente() {
     }
 
-    public Vente(Long id, BigDecimal total, LocalDateTime dateVente, Client client, Vendeur vendeur) {
+    public Vente(Long id, BigDecimal total, LocalDate dateVente, Client client, Vendeur vendeur) {
         this.id = id;
         this.total = total;
         this.dateVente = dateVente;
@@ -72,11 +72,11 @@ public class Vente {
         this.total = total;
     }
 
-    public LocalDateTime getDateVente() {
+    public LocalDate getDateVente() {
         return dateVente;
     }
 
-    public void setDateVente(LocalDateTime dateVente) {
+    public void setDateVente(LocalDate dateVente) {
         this.dateVente = dateVente;
     }
 

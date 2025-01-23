@@ -23,11 +23,24 @@ public class Vendeur {
     @OneToMany(mappedBy = "vendeur", cascade = CascadeType.ALL)
     private List<Vente> ventes;
 
-    public Vendeur(Long id, String nom, int commission, List<Vente> ventes) {
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public Vendeur(Long id, String nom, int commission, List<Vente> ventes, Genre genre) {
         this.id = id;
         this.nom = nom;
         this.commission = commission;
         this.ventes = ventes;
+        this.genre = genre;
     }
 
     public Vendeur() {

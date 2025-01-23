@@ -56,4 +56,19 @@ public class VendeurController {
 
         return "vendeurs/list";
     }
+
+    @GetMapping("/commission-genre")
+    public String getCommissionGenre(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate, Model model) {
+
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+
+        List<CommissionGenre> commissionGenres = vendeurService.getSumCommission(startDate, endDate);
+
+        model.addAttribute("commissionGenres", commissionGenres);
+
+        return "vendeurs/commissiongenre";
+    }
 }

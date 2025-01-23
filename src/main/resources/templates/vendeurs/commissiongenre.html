@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Mirana - Recettes</title>
+    <link rel="stylesheet" href="/css/tailwind-output.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+<!-- Navbar -->
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<!-- Sidebar -->
+<div class="relative" th:replace="~{layout/sidebar :: sidebar}"></div>
+
+<!-- Main Content -->
+<div class="p-8 pt-20 sm:ml-64">
+    <div class="flex justify-between items-end mb-6">
+        <div>
+            <!--            <h1 class="text-3xl font-extrabold text-gray-800 dark:text-gray-200 mb-6">Ventes</h1>-->
+            <!--            <a href="/ventes/create"-->
+            <!--               class="inline-block bg-amber-700 hover:bg-amber-800 text-white font-semibold px-5 py-3 rounded-lg shadow-md transition">-->
+            <!--                Nouvelle vente-->
+            <!--            </a>-->
+        </div>
+        <form th:action="@{/vendeurs/commission-genre}" method="get" class="flex gap-2">
+
+            <div>
+                <label for="startDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date debut</label>
+                <input th:value="${startDate}" name="startDate" type="date" id="startDate" class="w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-amber-500 dark:focus:border-amber-500" placeholder="Date" required/>
+            </div>
+            <div>
+                <label for="endDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date fin</label>
+                <input th:value="${endDate}" name="endDate" type="date" id="endDate" class="w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-amber-500 dark:focus:border-amber-500" placeholder="Date" required/>
+            </div>
+            <button type="submit" class=" text-white bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800">
+                Afficher
+            </button>
+        </form>
+    </div>
+
+    <!-- Table -->
+    <div class="relative mt-8 overflow-x-auto shadow-lg sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs uppercase bg-gray-200 text-gray-700">
+            <tr>
+                <th scope="col" class="px-6 py-3">Genre</th>
+                <th scope="col" class="px-6 py-3">Somme</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd:bg-white even:even:bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
+                th:each="commission : ${commissionGenres}">
+                <td class="px-6 py-4" th:text="${commission.genre().nom}"></td>
+                <td class="px-6 py-4" th:text="${commission.getTotalCommission()}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="/js/flowbite.min.js"></script>
+<script src="/js/sidebar.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/flowbite@1.6.5/dist/flowbite.min.js"></script>-->
+</body>
+</html>

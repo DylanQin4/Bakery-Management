@@ -70,9 +70,11 @@ INSERT INTO recette (id_ingredient, id_produit, quantite) VALUES
     (2, 4, 0.05),
     (6, 4, 0.10);
 
-INSERT INTO vendeur (nom, commission)
-VALUES ('Rakoto', 5),
-       ('Jean', 5);
+INSERT INTO genre(nom) VALUES ('Homme'), ('Femme');
+
+INSERT INTO vendeur (nom, commission, id_genre)
+VALUES ('Rakoto', 5, 1),
+       ('Jeanne', 5, 2);
 
 INSERT INTO ventes (total, date_vente, id_client, id_vendeur) VALUES
     (1000.50, '2025-01-01 10:30:00', 1, 1),

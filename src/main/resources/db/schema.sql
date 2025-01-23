@@ -126,13 +126,25 @@ CREATE TABLE fournisseurs(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE genre (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(150) NOT NULL UNIQUE
+);
+
 CREATE TABLE vendeur (
     id SERIAL PRIMARY KEY,
     nom VARCHAR(150) NOT NULL UNIQUE,
-    commission INTEGER DEFAULT 5
+    commission INTEGER DEFAULT 5,
+    id_genre INT NOT NULL ,
+    FOREIGN KEY(id_genre) REFERENCES genre(id)
 );
--- ALTER TABLE vendeur
---     ADD COLUMN commission INTEGER DEFAULT 5;
+
+SELECT SUM(v.total * 0.05)
+FROM vendeur
+JOIN ventes v on vendeur.id = v.id_vendeur
+WHERE vendeur.id_genre = 1
+AND
+    v.total >= 10;
 
 CREATE TABLE ventes(
     id SERIAL,
@@ -155,6 +167,10 @@ CREATE TABLE details_vente(
     FOREIGN KEY(id_vente) REFERENCES ventes(id),
     FOREIGN KEY(id_produit) REFERENCES produits(id)
 );
+
+-- drop table details_vente;
+-- drop table ventes;
+-- drop table vendeur;
 
 CREATE TABLE achats(
     id SERIAL,

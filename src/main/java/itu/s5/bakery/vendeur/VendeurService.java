@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +17,9 @@ public class VendeurService {
     private VenteRepository venteRepository;
     @Autowired
     private VendeurRepository vendeurRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     public BigDecimal getCommissionByVendeur(Long vendeurId, LocalDate startDate, LocalDate endDate) {
         BigDecimal totalVentes;
@@ -42,6 +46,19 @@ public class VendeurService {
 
         // Calcul de la commission : 5%
         return totalVentes.multiply(BigDecimal.valueOf(0.05));
+    }
+
+    public List<CommissionGenre> getSumCommission(LocalDate stardDate, LocalDate endDate) {
+        List<Genre> genres = genreRepository.findAll();
+        List<CommissionGenre> resp = new ArrayList<>();
+        for (Genre genre : genres) {
+            if (stardDate == null || endDate == null) {
+                resp.add(new CommissionGenre(genre, vendeurRepository.getSumCommissionByGenre(genre.getId())));
+            } else {
+                resp.add(new CommissionGenre(genre, vendeurRepository.getSumCommissionByGenre(genre.getId(), stardDate, endDate)));
+            }
+        }
+        return resp;
     }
 
     public List<Vendeur> getAllVendeurs() {

@@ -26,6 +26,50 @@ CREATE TABLE produits(
     PRIMARY KEY(id),
     UNIQUE(nom)
 );
+ALTER TABLE produits ALTER COLUMN prix_revient TYPE NUMERIC(38,2);
+ALTER TABLE produits ALTER COLUMN prix_vente TYPE NUMERIC(38,2);
+
+
+CREATE TABLE historique_prix (
+    id SERIAL PRIMARY KEY,
+    produit_id INT NOT NULL,
+    ancien_prix_revient NUMERIC(15,2) NOT NULL,
+    ancien_prix_vente NUMERIC(15,2) NOT NULL,
+    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (produit_id) REFERENCES produits (id) ON DELETE CASCADE
+);
+
+DROP TRIGGER IF EXISTS trigger_on_update_prix ON produits;
+
+CREATE OR REPLACE FUNCTION trigger_update_prix()
+    RETURNS TRIGGER AS $$
+BEGIN
+    -- Insère l'ancien et le nouveau prix dans la table d'historique
+    INSERT INTO historique_prix (
+        produit_id,
+        ancien_prix_revient,
+        ancien_prix_vente,
+        date_modification
+    )
+    VALUES (
+               NEW.id,
+               OLD.prix_revient,
+               OLD.prix_vente,
+                CURRENT_TIMESTAMP
+           );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_on_update_prix
+    AFTER UPDATE OF prix_revient, prix_vente
+    ON produits
+    FOR EACH ROW
+    WHEN (OLD.prix_revient IS DISTINCT FROM NEW.prix_revient OR
+          OLD.prix_vente IS DISTINCT FROM NEW.prix_vente)
+EXECUTE FUNCTION trigger_update_prix();
+
+
 CREATE TABLE p_conseilles(
     id SERIAL,
     id_produit INTEGER NOT NULL,
@@ -139,12 +183,6 @@ CREATE TABLE vendeur (
     FOREIGN KEY(id_genre) REFERENCES genre(id)
 );
 
-SELECT SUM(v.total * 0.05)
-FROM vendeur
-JOIN ventes v on vendeur.id = v.id_vendeur
-WHERE vendeur.id_genre = 1
-AND
-    v.total >= 10;
 
 CREATE TABLE ventes(
     id SERIAL,

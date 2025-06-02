@@ -33,3 +33,4 @@ build/
 .vscode/
 
 /src/frontend/node_modules/
+/src/main/resources/static/css/tailwind-output.css

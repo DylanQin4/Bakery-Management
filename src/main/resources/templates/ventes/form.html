@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Mirana - Ventes</title>
+    <link rel="stylesheet" href="/css/tailwind-output.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+<!-- Navbar -->
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<!-- Sidebar -->
+<div class="relative" th:replace="~{layout/sidebar :: sidebar}"></div>
+
+<!-- Main Content -->
+<div class="p-8 pt-20 sm:ml-64">
+    <p th:if="${error != null ? error: ''}"></p>
+    <h1 class="text-3xl font-extrabold text-gray-800 dark:text-gray-200 mb-6"
+        th:text="${#strings.isEmpty(venteForm.getClientId()) ? 'Créer une vente' : 'Modifier la vente'}">
+    </h1>
+
+    <form th:action="@{/ventes}" th:object="${venteForm}" method="post"
+          class="space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+        <div th:if="${#fields.hasErrors('global')}" class="text-red-600 dark:text-red-400">
+            <p th:each="error : ${#fields.errors('global')}" th:text="${error}"></p>
+        </div>
+
+        <!-- ID -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Client -->
+        <div>
+            <label for="client" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Client</label>
+            <select id="client" name="clientId" th:field="*{clientId}" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                <option value="" th:if="${venteForm.getClientId() == null}">-- Sélectionnez un client --</option>
+                <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.nom}" th:selected="${client.id == venteForm.getClientId()}"></option>
+            </select>
+        </div>
+
+        <!-- Vendeur -->
+        <div>
+            <label for="vendeur" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Vendeur</label>
+            <select id="vendeur" name="vendeurId" th:field="*{vendeurId}" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+<!--                <option value="" th:if="${venteForm.getClientId() == null}">&#45;&#45; Sélectionnez un client &#45;&#45;</option>-->
+                <option th:each="vendeur : ${vendeurs}" th:value="${vendeur.id}" th:text="${vendeur.nom}" th:selected="${vendeur.id == venteForm.getVendeurId()}"></option>
+            </select>
+        </div>
+
+        <!-- Produits dynamiques -->
+        <div>
+            <h2 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">Produits</h2>
+            <div id="produit-container">
+                <div th:each="ligne, stat : ${venteForm.getDetailVente()}" class="produit-row flex space-x-4 items-center mb-4">
+                    <select required
+                            th:field="*{detailVente[__${stat.index}__].produitId}"
+                            class="block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                        <option value="" disabled>-- Sélectionnez un produit --</option>
+                        <option
+                                th:each="produit : ${produits}"
+                                th:value="${produit.id}"
+                                th:text="${produit.nom}"
+                                th:selected="${produit.id == ligne.getProduitId()}">
+                        </option>
+                    </select>
+                    <input type="number" th:field="*{detailVente[__${stat.index}__].quantite}" required step="1"
+                           placeholder="Quantité"
+                           class="block w-1/4 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+                    <button type="button" onclick="removeProduit(this)" class="text-red-600 hover:underline">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+            <button type="button" onclick="addProduit()" class="mt-2 text-blue-600 hover:underline">
+                Ajouter un produit
+            </button>
+        </div>
+
+
+        <div class="flex justify-between">
+            <a href="/ventes"
+               class="inline-block px-5 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg shadow-md transition">
+                Annuler
+            </a>
+            <button type="submit"
+                    class="inline-block px-5 py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-lg shadow-md transition">
+                Enregistrer
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/flowbite.min.js"></script>
+<script src="/js/sidebar.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const produits = /*[[${produits}]]*/ [];
+    /*]]>*/
+</script>
+<script src="/js/vente-bouton-dynamique.js"></script>
+</body>
+</html>

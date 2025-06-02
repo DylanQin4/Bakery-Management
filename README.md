@@ -3,6 +3,10 @@
 ## Description
 This project is an application for managing a bakery, built using **Spring MVC**, **Thymeleaf**, **Tailwind CSS**, and **Flowbite** for a modern and efficient web interface.
 
+## Overview
+
+![Tableau de Bord](./overview.png)
+
 ## Prerequisites
 Before starting, make sure you have installed the following tools:
 
